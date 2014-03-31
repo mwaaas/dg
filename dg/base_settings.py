@@ -116,6 +116,7 @@ INSTALLED_APPS = (
     'communications',
     'human_resources',
     'feeds',
+    'trainings',
 )
 
 #following line makes sessionid cookie accessible to in-browser javascript

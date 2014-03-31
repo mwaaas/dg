@@ -13,6 +13,7 @@ from dashboard.views import feed_animators, get_person, redirect_url, search
 from farmerbook import farmer_book_views
 from output.views import video_analytics
 from static_site_views import spring_analytics
+from training_admin import training_admin
 from website_admin import website_admin
 import website_archive_urls
 
@@ -20,6 +21,8 @@ admin.login_template = 'social_website/login.html'
 admin.logout_template = 'social_website/home.html'
 website_admin.login_template = 'social_website/login.html'
 website_admin.logout_template = 'social_website/home.html'
+training_admin.login_template = 'social_website/login.html'
+training_admin.logout_template = 'social_website/home.html'
 
 urlpatterns = patterns('',
     (r'^', include(social_website.urls)),
@@ -37,6 +40,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.urls)),
     (r'^adminwebsite/', include(website_admin.urls)),
+    (r'^trainingadmin/', include(training_admin.urls)),
     
     (r'^coco/', include(coco.urls)),
     (r'^path/', include('path.urls')),
