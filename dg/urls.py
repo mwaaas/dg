@@ -19,6 +19,7 @@ from website_admin import website_admin
 from mcoco_admin import mcoco_admin
 import website_archive_urls
 import deoanalytics.urls
+import IVR.urls
 
 admin.login_template = 'social_website/login.html'
 admin.logout_template = 'social_website/home.html'
@@ -74,6 +75,8 @@ urlpatterns = patterns('',
     (r'^fbconnect/', include('fbconnect.urls')),
     
     (r'^analytics/cocouser/',include('deoanalytics.urls')),
+    (r'^ivrs/',include('IVR.urls')),
+
 )
 
 # Static files serving locally
