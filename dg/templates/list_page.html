@@ -1,0 +1,46 @@
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+  $("#exotel").click(function(){
+    $.ajax(
+    	{url:"/ivrs/call/",
+    	dataType:"GET",
+    	success:function(result)
+    	{
+      console.log(result);
+    }});
+  });
+});
+	</script>
+</head>
+	<body>
+		<button id="exotel" onclick="">
+			Place a call
+		</button>
+
+{% for element in list_elements %}
+    {# Each "contact" is a Contact model object. #}
+    {{ element.id}}<br />
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if list_elements.has_previous %}
+            <a href="?page={{ list_elements.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ list_elements.number }} of {{ list_elements.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ list_elements.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+
+	</body>
+</html>

@@ -10,7 +10,8 @@ class VideosAdopted(models.Model):
        video = models.ForeignKey(Video)
        watch_at = models.DateTimeField(null=True)
        survey_at = models.DateTimeField(null=True)
-       has_seen = models.NullBooleanField()
-       has_adopted = models.NullBooleanField()
+       has_seen = models.BooleanField(default=True)
+       has_adopted = models.BooleanField(default=True)
        recording_url = models.URLField(null=True, blank=True)
+       s3url = models.URLField(null=True, blank=True)
 

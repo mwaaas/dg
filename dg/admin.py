@@ -1,7 +1,7 @@
 from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.admin import Group, GroupAdmin, User, UserAdmin
 
-from dashboard.admin import AnimatorAdmin, AnimatorAssignedVillageAdmin, BlockAdmin, CocoUserAdmin, DistrictAdmin, PersonAdmin, PersonAdoptPracticeAdmin, PersonGroupAdmin, PracticesAdmin, PracticeSectorAdmin, PracticeSubjectAdmin, PracticeSubSectorAdmin, PracticeSubtopicAdmin, PracticeTopicAdmin, ScreeningAdmin, StateAdmin, VideoAdmin, VillageAdmin
+from dashboard.admin import AnimatorAdmin, AnimatorAssignedVillageAdmin, BlockAdmin, CocoUserAdmin, DistrictAdmin, PersonAdmin, PersonAdoptPracticeAdmin, PersonGroupAdmin, PracticesAdmin, PracticeSectorAdmin, PracticeSubjectAdmin, PracticeSubSectorAdmin, PracticeSubtopicAdmin, PracticeTopicAdmin, ScreeningAdmin, StateAdmin, VideoAdmin, VillageAdmin, IVRAdmin
 
 from activities.models import PersonAdoptPractice, Screening
 from coco.models import CocoUser
@@ -9,6 +9,8 @@ from geographies.models import Block, Country, District, Region, State, Village
 from people.models import Animator, AnimatorAssignedVillage, Person, PersonGroup
 from programs.models import Partner
 from videos.models import Language, Practice, PracticeSector, PracticeSubject, PracticeSubSector, PracticeSubtopic, PracticeTopic,  Video
+from IVR.models import VideosAdopted
+
 
 
 class Admin(AdminSite):
@@ -43,6 +45,7 @@ admin.register(PracticeTopic, PracticeTopicAdmin)
 admin.register(PracticeSubtopic, PracticeSubtopicAdmin)
 admin.register(PracticeSubject, PracticeSubjectAdmin)
 admin.register(CocoUser, CocoUserAdmin)
+admin.register(VideosAdopted, IVRAdmin)
 #admin.register(Reviewer)
 #admin.register(Random)
 #admin.register(Message, MessageAdmin)
