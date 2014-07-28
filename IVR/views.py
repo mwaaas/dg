@@ -79,6 +79,8 @@ def has_not_seen(request):
 	video_view.has_seen = False
 	video_view.has_adopted = False
 	video_view.save()
+	logger.info("video view saved")
+	logger.info(video_view.has_seen)
 
 def has_not_adopted(request):
 	video_id = request.GET['CustomField']
