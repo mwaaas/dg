@@ -65,7 +65,7 @@ def call_exotel(request):
             'Url': url,
             'TimeOut': timeout,
             'CallType': calltype,
-            'CustomField': videoId
+            'CustomField': vals.video_id
         })
 	print r.status_code
 	return r
