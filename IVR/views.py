@@ -76,7 +76,10 @@ def has_not_seen(request):
 	logger = logging.getLogger('social_website')
 	logger.info("Mobile number computed : " + mobile_no)
 	logger.info("Video ID computed : " + video_id)
-	video_view = VideosAdopted.objects.get(video_id=video_id, mobile_no=mobile_no)
+	try:
+		video_view = VideosAdopted.objects.get(video_id=int(video_id), mobile_no=mobile_no)
+	except ex:
+		logger.info(ex)
 	logger.info("Person : " + video_view.person)
 	video_view.has_seen = False
 	video_view.has_adopted = False
