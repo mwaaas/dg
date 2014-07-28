@@ -127,7 +127,7 @@ class Video(CocoModel):
     last_modified = models.DateTimeField(auto_now=True)
     youtubeid = models.CharField(max_length=20, blank=True)
     partner = models.ForeignKey(Partner)
-    
+    s3url = models.URLField(null=True, blank=True)
     class Meta:
         unique_together = ("title", "video_production_start_date", "video_production_end_date", "village")
 
