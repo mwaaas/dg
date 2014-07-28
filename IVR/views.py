@@ -27,7 +27,7 @@ def greeting_view(request):
 	callSid = request.GET["CallSid"]
 	frm = request.GET["From"]
 	to = request.GET["To"]
-	response = HttpResponse("https://s3.amazonaws.com/digitalgreen/try2+(1).wav",content_type="text/plain")
+	response = HttpResponse("https://s3.amazonaws.com/digitalgreen/try2+(1).wav\nhttps://s3.amazonaws.com/digitalgreen/try2+(1).wav",content_type="text/plain")
 	response["CallSid"] = callSid
 	response["From"] = frm
 	response["To"] = to
