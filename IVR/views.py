@@ -75,6 +75,7 @@ def has_not_seen(request):
 	mobile_no = request.GET['From'][1:]
 	video_view = VideosAdopted.objects.get(video_id=video_id, mobile_no=mobile_no)
 	video_view.has_seen = False
+	video_view.has_adopted = False
 	video_view.save()
 
 def has_not_adopted(request):
