@@ -65,33 +65,32 @@ def call_exotel(request):
             'Url': url,
             'TimeOut': timeout,
             'CallType': calltype,
-            'CustomField': vals.video_id
+            'CustomField': req_id
         })
 	print r.status_code
 	return r
 
 def has_not_seen(request):
-	video_id = request.GET['CustomField']
+	req_id = request.GET['CustomField']
 	mobile_no = request.GET['From'][1:]
 	logger = logging.getLogger('social_website')
 	logger.info("Mobile number computed : " + mobile_no)
-	logger.info("Video ID computed : " + video_id)
 	try:
-		video_view = VideosAdopted.objects.get(id=2)
+		video_view = VideosAdopted.objects.get(id=req_id)
 		video_view.has_seen = False
 		video_view.has_adopted = False
 		video_view.save()
 		logger.info("video view saved")
 		logger.info(video_view.has_seen)
-		logger.info("Person : " + video_view.person)
+		logger.info("Person : " + video_view.person_id)
 	except Exception as ex:
 		logger.info(ex)
 	
 	
 def has_not_adopted(request):
-	video_id = request.GET['CustomField']
+	req_id = request.GET['CustomField']
 	mobile_no = request.GET['From'][1:]
-	video_view = VideosAdopted.objects.get(video_id=video_id, mobile_no=mobile_no)
+	video_view = VideosAdopted.objects.get(id=req_id)
 	video_view.has_adopted = False
 	video_view.save()
 
