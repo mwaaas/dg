@@ -1,5 +1,5 @@
 # Create your views here.
-
+import logging
 from datetime import datetime
 from django.contrib import auth
 from django.core import urlresolvers
@@ -73,6 +73,8 @@ def call_exotel(request):
 def has_not_seen(request):
 	video_id = request.GET['CustomField']
 	mobile_no = request.GET['From'][1:]
+	logger = logging.getLogger('social_website')
+	logger.info("Mobile number computed : " + mobile_no)
 	video_view = VideosAdopted.objects.get(video_id=video_id, mobile_no=mobile_no)
 	video_view.has_seen = False
 	video_view.has_adopted = False
