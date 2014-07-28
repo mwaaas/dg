@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import requests
-from models import VideosAdopted
+from IVR.models import VideosAdopted
 
 
 sid = "digitalgreen2"
@@ -78,15 +78,16 @@ def has_not_seen(request):
 	logger.info("Video ID computed : " + video_id)
 	try:
 		video_view = VideosAdopted.objects.get(id=2)
+		video_view.has_seen = False
+		video_view.has_adopted = False
+		video_view.save()
+		logger.info("video view saved")
+		logger.info(video_view.has_seen)
+		logger.info("Person : " + video_view.person)
 	except Exception as ex:
 		logger.info(ex)
-	logger.info("Person : " + video_view.person)
-	video_view.has_seen = False
-	video_view.has_adopted = False
-	video_view.save()
-	logger.info("video view saved")
-	logger.info(video_view.has_seen)
-
+	
+	
 def has_not_adopted(request):
 	video_id = request.GET['CustomField']
 	mobile_no = request.GET['From'][1:]
