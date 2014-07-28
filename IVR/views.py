@@ -54,7 +54,7 @@ def list_page(request):
 	return render_to_response('list_page.html', {"list_elements": list_elements})
 
 def call_exotel(request):
-	req_id = request.GET.get("id")
+	req_id = request.GET["id"]
 	vals = VideosAdopted.objects.get(id__exact=req_id)
 	r = requests.post('https://twilix.exotel.in/v1/Accounts/{sid}/Calls/connect.json'.format(sid=sid),
         auth=(sid, token),
