@@ -68,7 +68,7 @@ def call_exotel(request):
             'CustomField': videoId
         })
 	print r.status_code
-	return 1
+	return r
 
 def has_not_seen(request):
 	video_id = request.GET['CustomField']

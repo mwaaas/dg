@@ -271,7 +271,7 @@ class CocoUserAdmin(admin.ModelAdmin):
 class IVRAdmin(admin.ModelAdmin):
    
     raw_id_fields = ('person', 'video')
-    list_display = ('id','video','person','ivr_call')
+    list_display = ('id','video','person','video','ivr_call')
     def ivr_call(self,value):
         return '<a href="/ivrs/call/?id=%d">call_exotel</a>' % (value.id)
     ivr_call.allow_tags = True
