@@ -77,8 +77,8 @@ def has_not_seen(request):
 	logger.info("Mobile number computed : " + mobile_no)
 	logger.info("Video ID computed : " + video_id)
 	try:
-		video_view = VideosAdopted.objects.get(video_id=int(video_id), mobile_no=mobile_no)
-	except ex:
+		video_view = VideosAdopted.objects.get(id=2)
+	except Exception as ex:
 		logger.info(ex)
 	logger.info("Person : " + video_view.person)
 	video_view.has_seen = False
