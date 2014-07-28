@@ -9,6 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import requests
 from IVR.models import VideosAdopted
+from videos.models import video
 
 
 sid = "digitalgreen2"
@@ -27,12 +28,17 @@ def greeting_view(request):
 	callSid = request.GET["CallSid"]
 	frm = request.GET["From"]
 	to = request.GET["To"]
-	response = HttpResponse("https://s3.amazonaws.com/digitalgreen/try2+(1).wav\nhttps://s3.amazonaws.com/digitalgreen/try2+(1).wav",content_type="text/plain")
+	req_id = request.GET["CustomField"]
+	video_requested = VideosAdopted.objects.get(id=req_id)
+	videoObj = video.objects.get(id = video_requested.video_id) 
+	#s3 = videoObj.s3url
+	s3 = "https://s3.amazonaws.com/dg_ivrs/ghanajeevamritam_name.wav"
+	response = HttpResponse("https://s3.amazonaws.com/dg_ivrs/telugu_greeting.wav\n " +s3 ,content_type="text/plain")
 	response["CallSid"] = callSid
 	response["From"] = frm
 	response["To"] = to
 	response["DialWhomNumber"] = ""
-	#response["CustomField"] =  videoId
+	response["CustomField"] =  req_id
 
 
 	return response
