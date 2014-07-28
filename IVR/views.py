@@ -3,7 +3,7 @@ import logging
 from datetime import datetime
 from django.contrib import auth
 from django.core import urlresolvers
-from django.http import HttpResponse
+from django.http import HttpResponse , HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -68,7 +68,7 @@ def call_exotel(request):
             'CustomField': req_id
         })
 	print r.status_code
-	return r
+	return HttpResponseRedirect("/admin/IVR/videosadopted/")
 
 def has_not_seen(request):
 	req_id = request.GET['CustomField']
