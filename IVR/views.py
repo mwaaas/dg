@@ -12,12 +12,12 @@ from IVR.models import VideosAdopted
 from videos.models import Video
 
 
-sid = "digitalgreen2"
-token = "421c11b1235067ca30ca87590c80c31eadc46af0"
+sid = "maps4aid"
+token = "ffdb20874a3700399afc81b47194306c27cf98d4"
         # agent_no="9718935868",
         #customerNo="9718935868",
 customerNo="9910338592"
-callerid="04030911139"
+callerid="08033013384"
 url='http://my.exotel.in/exoml/start/27038'
 timelimit="500"  # This is optional
 timeout="500" # This is also optional
