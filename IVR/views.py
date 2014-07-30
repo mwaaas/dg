@@ -33,7 +33,7 @@ def greeting_view(request):
 	videoObj = Video.objects.get(id = video_requested.video_id) 
 	s3 = videoObj.s3url
 	#s3 = "https://s3.amazonaws.com/dg_ivrs/ghanajeevamritam_name.wav"
-	response = HttpResponse("https://s3.amazonaws.com/dg_ivrs/telugu_greeting.wav\n " +s3 ,content_type="text/plain")
+	response = HttpResponse("https://s3.amazonaws.com/dg_ivrs/greeting_telugu.wav\n " + s3 ,content_type="text/plain")
 	response["CallSid"] = callSid
 	response["From"] = frm
 	response["To"] = to
