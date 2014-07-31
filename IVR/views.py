@@ -15,8 +15,8 @@ from videos.models import Video
 
 sid = "maps4aid"
 token = "ffdb20874a3700399afc81b47194306c27cf98d4"
-        # agent_no="9718935868",
-        #customerNo="9718935868",
+		# agent_no="9718935868",
+		#customerNo="9718935868",
 customerNo="9910338592"
 callerid="08033013384"
 url='http://my.exotel.in/exoml/start/27038'
@@ -64,25 +64,25 @@ def call_exotel(request):
 	req_id = request.GET["id"]
 	vals = VideosAdopted.objects.get(id__exact=req_id)
 	r = requests.post('https://twilix.exotel.in/v1/Accounts/{sid}/Calls/connect.json'.format(sid=sid),
-        auth=(sid, token),
-        data={
-            'From': int(vals.mobile_no),
-            'CallerId': callerid,
-            'TimeLimit': timelimit,
-            'Url': url,
-            'TimeOut': timeout,
-            'CallType': calltype,
-            'CustomField': req_id
-        })
+		auth=(sid, token),
+		data={
+			'From': int(vals.mobile_no),
+			'CallerId': callerid,
+			'TimeLimit': timelimit,
+			'Url': url,
+			'TimeOut': timeout,
+			'CallType': calltype,
+			'CustomField': req_id
+		})
 	print r.status_code
 	return HttpResponseRedirect("/admin/IVR/videosadopted/")
 
 def has_not_seen(request):
 	req_id = request.GET['CustomField']
 	mobile_no = request.GET['From'][1:]
+	sendmail("Video not seen "+req_id, mobile_no)
 	logger = logging.getLogger('social_website')
 	logger.info("Mobile number computed : " + mobile_no)
-    sendmail("Video not seen "+req_id, mobile_no)
 	try:
 		video_view = VideosAdopted.objects.get(id=req_id)
 		video_view.has_seen = False
@@ -98,7 +98,7 @@ def has_not_seen(request):
 def has_not_adopted(request):
 	req_id = request.GET['CustomField']
 	mobile_no = request.GET['From'][1:]
-    sendmail("Video not adopted "+req_id, mobile_no)
+	sendmail("Video not adopted "+req_id, mobile_no)
 	video_view = VideosAdopted.objects.get(id=req_id)
 	video_view.has_adopted = False
 	video_view.save()
