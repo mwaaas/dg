@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response, render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import requests
+from dimagi.scripts.exception_email import sendmail
 from IVR.models import VideosAdopted
 from videos.models import Video
 
@@ -81,6 +82,7 @@ def has_not_seen(request):
 	mobile_no = request.GET['From'][1:]
 	logger = logging.getLogger('social_website')
 	logger.info("Mobile number computed : " + mobile_no)
+    sendmail("Video not seen "+req_id, mobile_no)
 	try:
 		video_view = VideosAdopted.objects.get(id=req_id)
 		video_view.has_seen = False
@@ -96,6 +98,7 @@ def has_not_seen(request):
 def has_not_adopted(request):
 	req_id = request.GET['CustomField']
 	mobile_no = request.GET['From'][1:]
+    sendmail("Video not adopted "+req_id, mobile_no)
 	video_view = VideosAdopted.objects.get(id=req_id)
 	video_view.has_adopted = False
 	video_view.save()
