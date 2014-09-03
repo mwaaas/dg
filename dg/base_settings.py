@@ -15,6 +15,7 @@ MANAGERS = ADMINS
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'UTC'
+USE_TZ = True
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -86,6 +87,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
+    'sekizai.context_processors.sekizai',
+    'django.core.context_processors.debug',
 )
 
 INSTALLED_APPS = (
@@ -94,8 +97,9 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
-    #'django.contrib.sites',
+    'django.contrib.sites',
     'django.contrib.admindocs',
+    'django.contrib.humanize',
     'programs',
     'geographies',
     'people',
@@ -103,7 +107,6 @@ INSTALLED_APPS = (
     'activities',
     #'debug_toolbar',
     'output',
-    'django.contrib.humanize',
     'south',
     'farmerbook',
     'fbconnect',
@@ -116,6 +119,15 @@ INSTALLED_APPS = (
     'human_resources',
     'feeds',
     'deoanalytics',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'django_notify',
+    'wiki',
+    'wiki.plugins.attachments',
+    'wiki.plugins.notifications',
+    'wiki.plugins.images',
+    'wiki.plugins.macros',
 )
 
 #following line makes sessionid cookie accessible to in-browser javascript

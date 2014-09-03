@@ -3,6 +3,8 @@ from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic import TemplateView
 
+from wiki.urls import get_pattern as get_wiki_pattern
+from django_notify.urls import get_pattern as get_nyt_pattern
 import coco.urls
 import dimagi.urls
 import feeds.urls
@@ -10,7 +12,7 @@ import feeds.urls
 import social_website.api_urls
 import social_website.urls
 
-from admin import admin
+#from admin import admin
 from coco.data_log import send_updated_log
 from farmerbook import farmer_book_views
 from output.views import video_analytics
@@ -21,10 +23,13 @@ import website_archive_urls
 import deoanalytics.urls
 
 
-admin.login_template = 'social_website/login.html'
-admin.logout_template = 'social_website/home.html'
+#admin.login_template = 'social_website/login.html'
+#admin.logout_template = 'social_website/home.html'
 website_admin.login_template = 'social_website/login.html'
 website_admin.logout_template = 'social_website/home.html'
+
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^', include(social_website.urls)),
@@ -40,7 +45,7 @@ urlpatterns = patterns('',
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.STATIC_DOC_ROOT, 'show_indexes': True}),
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     # Uncomment the next line to enable the admin:
-    (r'^admin/', include(admin.urls)),
+    (r'^admin/', include(admin.site.urls)),
     (r'^adminwebsite/', include(website_admin.urls)),
     (r'^mcocoadmin/', include(mcoco_admin.urls)),
     
@@ -70,6 +75,8 @@ urlpatterns = patterns('',
     (r'^analytics/cocouser/',include('deoanalytics.urls')),
 
     (r'^coco/docs/', TemplateView.as_view(template_name='cocodoc.html')),
+    (r'^notifications/', get_nyt_pattern()),
+    (r'', get_wiki_pattern()),
 
 )
 
