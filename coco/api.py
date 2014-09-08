@@ -463,13 +463,19 @@ class ScreeningResource(BaseResource):
         screening_id = bundle.data.get('id')
         del_objs = PersonMeetingAttendance.objects.filter(screening__id=screening_id).delete()
         pma_list = bundle.data.get('farmers_attendance')
-        for pma in pma_list:
-            pma = PersonMeetingAttendance(screening_id=screening_id, person_id=pma['person_id'], 
-                                          expressed_adoption_video_id = pma['expressed_adoption_video']['id'],
-                                           interested = pma['interested'], 
-                                          expressed_question = pma['expressed_question'], user_created_id = user_id)
-            pma.save()    
-        return bundle
+        if pma_list:
+            for pma in pma_list:
+                try:
+                    pma = PersonMeetingAttendance(screening_id=screening_id, person_id=pma['person_id'], 
+                                                  expressed_adoption_video_id = pma['expressed_adoption_video']['id'],
+                                                   interested = pma['interested'], 
+                                                  expressed_question = pma['expressed_question'], user_created_id = user_id)
+                    pma.save()
+                except Exception, e:
+                    raise PMANotSaved('For Screening with id: ' + str(screening_id) + ' pma is not getting saved. pma details: '+ str(e))   
+            return bundle
+        else:
+            raise PMANotSaved('Screening with details: ' + str(bundle.data) + ' can not be saved because attendance list is not available')
     
     def dehydrate_videoes_screened(self, bundle):
         return [{'id': video.id, 'title': video.title,} for video in bundle.obj.videoes_screened.all()]
