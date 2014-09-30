@@ -1,5 +1,4 @@
 import operator
-import widgets
 from django import forms
 from django.conf import settings
 from django.conf.urls import patterns
@@ -142,15 +141,9 @@ class PersonAdoptPracticeAdmin(admin.ModelAdmin):
 class PersonAdmin(admin.ModelAdmin):
     list_display = ('id', '__unicode__')
     search_fields = ['person_name','village__village_name','group__group_name']
-    #readonly_fields = ('image_tag',)
+    readonly_fields = ('image_tag',)
     
-    def formfield_for_dbfield(self, db_field, **kwargs):
-        if db_field.name == 'Image':
-            request = kwargs.pop("request", None)
-            kwargs['widget'] = widgets.AdminImageWidget
-            return db_field.formfield(**kwargs)
-        return super(PersonAdmin,self).formfield_for_dbfield(db_field, **kwargs)
-    
+
 class BlockAdmin(admin.ModelAdmin):
     list_display = ('block_name', 'district')
     search_fields = ['block_name', 'district__district_name']

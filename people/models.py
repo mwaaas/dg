@@ -7,6 +7,9 @@ from farmerbook.managers import FarmerbookManager
 from geographies.models import District, Village
 from programs.models import Partner
 
+from sorl.thumbnail import ImageField
+from dg.settings import MEDIA_URL
+
 class Animator(CocoModel):
     id = models.AutoField(primary_key = True)
     old_coco_id = models.BigIntegerField(editable=False, null=True)
@@ -71,12 +74,12 @@ class Person(CocoModel):
     partner = models.ForeignKey(Partner)
     objects = models.Manager() #The default manager
     farmerbook_objects = FarmerbookManager() #The manager for farmerbook
-    image = models.ImageField(default=False, upload_to='farmerbook_pics')
+    image = ImageField(default=False, upload_to='farmerbook_pics')
 
-    '''def image_tag(self):
-        return u'<img src="C:/Users/Abhishek/Desktop/Farmer,_Nicaragua.jpg/%s" width="100" height="100" />' %(self.image) 
+    def image_tag(self):
+        return u'<img src='+MEDIA_URL+'%s width="100" height="100" />'  %(self.image)
     image_tag.short_description = 'Image'
-    image_tag.allow_tags = True'''
+    image_tag.allow_tags = True
 
     class Meta:
         unique_together = ("person_name", "father_name", "village")
