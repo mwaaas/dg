@@ -15,14 +15,17 @@ def upload_data(file, user_id, block_id):
     file = os.path.join(dg.settings.MEDIA_ROOT, file)
     
     csvfile = open(file, 'rb')
-    rows = csv.DictReader(csvfile)    
+    rows = csv.DictReader(csvfile)
+
+    print "from here"    
     
     #check required fields
     req_field = ['Village_Name','Shg_Name','Member_Name','Member_Surname',
                  'Husband_Father_Name','Husband_Father_Surname']
     
     for row in rows:
-        if set(req_field) == set(row.keys()) and len(req_field) == len(row.keys()):
+        #if set(req_field) == set(row.keys()) and len(req_field) == len(row.keys()):
+        if row.keys() <= req_field:
             execute_upoad(file, user_id, block_id)
             break
         else:
@@ -66,7 +69,7 @@ def execute_upoad(file, user_id, block_id):
                 village_map[row['Village_Name']] = village.id
                 wrtr_success.writerow([i, row['Village_Name']])
                 village_success_file.flush()
-                print 'pushing', row['Village_Name']
+                #print 'pushing', row['Village_Name']
             
             except Exception as e:
                 ERROR += 1
@@ -107,7 +110,7 @@ def execute_upoad(file, user_id, block_id):
                 group_map[row['Shg_Name'] + row['Village_Name']] = group.id
                 wrtr_success.writerow([i,row['Shg_Name']])
                 group_success_file.flush()
-                print 'pushing', row['Shg_Name']
+                #print 'pushing', row['Shg_Name']
             
             except Exception as e:
                 ERROR += 1
@@ -150,7 +153,7 @@ def execute_upoad(file, user_id, block_id):
             person.save()
             wrtr_success.writerow([i, person_name])
             person_success_file.flush()
-            print 'pushing', row['Member_Name']
+            #print 'pushing', row['Member_Name']
         
         except Exception as e:
             ERROR += 1

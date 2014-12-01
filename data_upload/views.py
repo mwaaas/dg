@@ -2,7 +2,7 @@ import os.path
 import StringIO
 import zipfile
 import xlrd
-import csv
+import unicodecsv as csv
 
 from django import forms
 
@@ -128,13 +128,11 @@ def file_converter(document):
     
     converted_csv_file = open(os.path.splitext(document_docfile_name)[0]+ \
                              '.csv', 'wb')
-    wr = csv.writer(converted_csv_file, quoting=csv.QUOTE_ALL)
+    wr = csv.writer(converted_csv_file, quoting=csv.QUOTE_NONE)
     
     for rownum in xrange(sh.nrows):
-        temp_list = [unicode(x).replace(u'\xa0', u'') for x in sh.row_values(rownum)]
-        wr.writerow(temp_list)
-
-        
+        wr.writerow(sh.row_values(rownum))
+    
     converted_csv_file.close()
     os.remove(document_docfile_name) #delete the old document
     
