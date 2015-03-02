@@ -7,70 +7,11 @@ import MySQLdb
 import pandas.io.sql as psql
 import csv
 import dg.settings
+from static_queries import static_query
 
 class data_lib():
     Dict = {}
     lookup_matrix = {}
-
-    def handle_controller(self, args, options):
-
-    # Accepts options i.e. dictionary of dictionary e.g. {'partition':{'partner':'','state',''},'value':{'nScreening':True,'nAdoption':true}}
-    # This function is responsible to call function for checking validity of input and functions to make dataframes according to the inputs
-
-    #    print options['partition']
-    #    print options['value']
-        self.lookup_matrix = self.read_lookup_csv()
-        relevantPartitionDictionary = {}
-        relevantValueDictionary = {}
-        # --- checking validity of the partition fields and value fields entered by user ---
-        if self.check_partitionfield_validity(options['partition']):
-    #        print "valid input for partition fields"
-            for item in options['partition']:
-                if options['partition'][item] != False:
-                    relevantPartitionDictionary[item] = options['partition'][item]
-        else:
-            print "Warning - Invalid input for partition fields"
-
-        if self.check_valuefield_validity(options['value']):
-    #       print "valid input for value fields"
-            for item in options['value']:
-                if item =='list' and options['value']['list']!=False:
-                    relevantValueDictionary[options['value'][item]] = True
-    #                print item
-    #                print options['value'][item]
-                    relevantPartitionDictionary[categoryDictionary['partitionCumValues'][options['value'][item]]] = False
-                    del relevantPartitionDictionary[categoryDictionary['partitionCumValues'][options['value'][item]]]
-                if options['value'][item] != False and item!='list':
-                    relevantValueDictionary[item] = options['value'][item]
-        else:
-            print "Warning - Invalid input for Value fields"
-
-        final_df = pd.DataFrame()
-
-    #    print "%%%%%%%%%%%%%%%%% Relevant Partition Dictionary %%%%%%%%%%%%%%%%%%" + str(relevantPartitionDictionary)
-    #    print "################# Relevant Value Dictionary ##################" + str(relevantValueDictionary)
-
-        for input in relevantValueDictionary:
-            queryComponents = self.getRequiredTables(relevantPartitionDictionary, input, args, self.lookup_matrix)
-    #        print queryComponents
-    #        print "----------------------------------Full SQL Query---------------------------"
-            query = self.makeSQLquery(queryComponents[0], queryComponents[1], queryComponents[2], queryComponents[3])
-    #        print query
-    #        print "-------------------------------Result--------------------------------"
-            df = self.runQuery(query)
-            if final_df.empty:
-                final_df = df
-            else:
-                how=''
-                if len(final_df)>len(df):
-                    how = 'left'
-                else:
-                    how='right'
-    #            print how
-                final_df = pd.merge(final_df, df, how=how)
-    #        print df
-            # /home/ubuntu/code/dg_coco_test/dg/
-        return final_df
 
     def read_lookup_csv(self):
         # file_data = csv.reader(open('C:/Users/Lokesh/Documents/dg/dg/media/raw_data_analytics/data_analytics.csv'))
@@ -111,26 +52,94 @@ class data_lib():
             return False
 
 
+    def handle_controller(self, args, options):
+    # Accepts options i.e. dictionary of dictionary e.g. {'partition':{'partner':'','state',''},'value':{'nScreening':True,'nAdoption':true}}
+    # This function is responsible to call function for checking validity of input and functions to make dataframes according to the inputs
+
+    #    print options['partition']
+    #    print options['value']
+        self.lookup_matrix = self.read_lookup_csv()
+        relevantPartitionDictionary = {}
+        relevantValueDictionary = {}
+        # --- checking validity of the partition fields and value fields entered by user ---
+        print static_query['numAdoption']
+        if self.check_partitionfield_validity(options['partition']):
+    #        print "valid input for partition fields"
+            for item in options['partition']:
+                if options['partition'][item] != False:
+                    relevantPartitionDictionary[item] = options['partition'][item]
+        else:
+            print "Warning - Invalid input for partition fields"
+
+        if self.check_valuefield_validity(options['value']):
+    #       print "valid input for value fields"
+            for item in options['value']:
+                if item =='list' and options['value']['list']!=False:
+                    relevantValueDictionary[options['value'][item]] = True
+    #                print item
+    #                print options['value'][item]
+                    relevantPartitionDictionary[categoryDictionary['partitionCumValues'][options['value'][item]]] = False
+                    del relevantPartitionDictionary[categoryDictionary['partitionCumValues'][options['value'][item]]]
+                if options['value'][item] != False and item!='list':
+                    relevantValueDictionary[item] = options['value'][item]
+        else:
+            print "Warning - Invalid input for Value fields"
+
+        final_df = pd.DataFrame()
+
+    #    print "%%%%%%%%%%%%%%%%% Relevant Partition Dictionary %%%%%%%%%%%%%%%%%%" + str(relevantPartitionDictionary)
+    #    print "################# Relevant Value Dictionary ##################" + str(relevantValueDictionary)
+
+        for input in relevantValueDictionary:
+    #        print queryComponents
+    #        print "----------------------------------Full SQL Query---------------------------"
+            query = self.getRequiredTables(relevantPartitionDictionary, input, args, self.lookup_matrix)
+    #        print query
+    #        print "-------------------------------Result--------------------------------"
+            df = self.runQuery(query)
+            if final_df.empty:
+                final_df = df
+            else:
+                how=''
+                if len(final_df)>len(df):
+                    how = 'left'
+                else:
+                    how='right'
+    #            print how
+                final_df = pd.merge(final_df, df, how=how)
+    #        print df
+            # /home/ubuntu/code/dg_coco_test/dg/
+        return final_df
+
+
     def getRequiredTables(self, partitionDict, valueDictElement, args, lookup_matrix):
-        self.Dict.clear()
-        selectResult = self.getSelectComponent(partitionDict, valueDictElement)
-        fromResult = self.getFromComponent(partitionDict, valueDictElement, lookup_matrix)
-        whereResult = self.getWhereComponent(partitionDict, valueDictElement, self.Dict, args, lookup_matrix)
-        groupbyResult = self.getGroupByComponent(partitionDict, valueDictElement)
-    #    print "----------------------------------SELECT PART------------------------------"
-    #    print selectResult
-    #    print "----------------------------------FROM PART--------------------------------"
-    #    print fromResult
-    #    print "----------------------------------WHERE PART-------------------------------"
-    #    print whereResult
-    #    print "---------------------------------GROUP_BY PART----------------------------"
-    #    print groupbyResult
-        return (selectResult, fromResult, whereResult, groupbyResult)
+        query_to_run = ''
+        if valueDictElement == 'numAdoption' or valueDictElement == 'attendance':
+            select_from_query_to_run = self.getStaticQuery(partitionDict,valueDictElement,args).split('FROM')
+            whereResult = self.getWhereComponent(partitionDict, valueDictElement, self.Dict, args, lookup_matrix)
+            groupbyResult = self.getGroupByComponent(partitionDict, valueDictElement)
+            query_to_run = self.makeSQLquery(select_from_query_to_run[0].replace('SELECT',''),select_from_query_to_run[1],whereResult,groupbyResult)
+        else:
+            self.Dict.clear()
+            selectResult = self.getSelectComponent(partitionDict, valueDictElement)
+            fromResult = self.getFromComponent(partitionDict, valueDictElement, lookup_matrix)
+            whereResult = self.getWhereComponent(partitionDict, valueDictElement, self.Dict, args, lookup_matrix)
+            groupbyResult = self.getGroupByComponent(partitionDict, valueDictElement)
+        #    print "----------------------------------SELECT PART------------------------------"
+        #    print selectResult
+        #    print "----------------------------------FROM PART--------------------------------"
+        #    print fromResult
+        #    print "----------------------------------WHERE PART-------------------------------"
+        #    print whereResult
+        #    print "---------------------------------GROUP_BY PART----------------------------"
+        #    print groupbyResult
+            query_to_run = self.makeSQLquery(selectResult, fromResult, whereResult, groupbyResult)
+        return (query_to_run)
 
 
     def makeSQLquery(self, select_msg, from_msg, where_msg, groupby_msg):
-        query = 'select ' + str(select_msg) + ' from ' + str(from_msg) + ' where ' + str(
-            where_msg) + ' group by ' + str(groupby_msg)
+        query = 'SELECT ' + str(select_msg) + ' FROM ' + str(from_msg) + ' WHERE ' + str(
+            where_msg) + ' GROUP BY ' + str(groupby_msg)
         return query
 
 
@@ -235,6 +244,34 @@ class data_lib():
         if groupbyDictionary[valueElement] != False:
             groupbyComponentList.append(tableDictionary[valueElement] + '.' + str(groupbyDictionary[valueElement]))
         return ' , '.join(groupbyComponentList)
+
+    # Function to get the static query from static_queries.py file for numAdoption and attendance
+    def getStaticQuery(self, partitionElements, valueElement, dateArgs):
+        print "inside static query function"
+        temp_list = []
+        print "-------------------------"+str(partitionElements)
+        print "========================="+str(valueElement)
+        if valueElement == 'numAdoption':
+            for item in partitionElements:
+                if item in categoryDictionary['numAdoptionClub']:
+                    temp_list.append(item)
+            query_to_return = self.staticQuery(temp_list, valueElement, dateArgs)
+        if valueElement == 'attendance':
+            for item in partitionElements:
+                if item in categoryDictionary['attendanceClub']:
+                    temp_list.append(item)
+            query_to_return = self.staticQuery(temp_list, valueElement, dateArgs)
+        query = "select * hello"
+        return query_to_return
+
+    def staticQuery(self,partitionList, valueCondition, dateArgs):
+        print "!!!!!!!!!!!!!!!!!!!!!!1"+str(partitionList)
+        print "@@@@@@@@@@@@@@@@@@@@@@@"+str(valueCondition)
+        for entry in static_query[valueCondition]:
+            if sorted(entry) == sorted(tuple(partitionList)):
+                squery =  static_query[valueCondition][tuple(partitionList)].replace('from_date',dateArgs[0])
+                squery = squery.replace('to_date',dateArgs[1])
+        return squery
 
     # Function to accept query as a string to execute and make dataframe corresponding to that particular query and return that dataframe
     def runQuery(self, query):
