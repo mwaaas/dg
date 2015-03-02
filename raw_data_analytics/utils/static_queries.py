@@ -2,34 +2,37 @@ __author__ = 'Lokesh'
 static_query = {
     'numAdoption' : {
         ('animator', ):'''SELECT
-                            programs_partner.partner_name,
-                            geographies_country.country_name,
-                            geographies_state.state_name,
-                            geographies_district.district_name,
-                            geographies_block.block_name,
-                            geographies_village.village_name,
-                            people_animatorwisedata.animator_id,
-                            people_animatorwisedata.animator_name,
-                            COUNT(DISTINCT (activities_pmawisedata.pma_id)) AS 'Total Viewers',
-                            COUNT(DISTINCT (activities_pmawisedata.person_id)) AS 'Unique Viewers'
-                        FROM
-                            people_animatorwisedata
-                                JOIN
-                            activities_screeningwisedata ON activities_screeningwisedata.animator_id = people_animatorwisedata.animator_id
-                                JOIN
-                            activities_pmawisedata ON activities_pmawisedata.screening_id = activities_screeningwisedata.screening_id
-                                LEFT JOIN
-                            geographies_village ON geographies_village.id = activities_screeningwisedata.village_id
-                                LEFT JOIN
-                            geographies_block ON geographies_block.id = geographies_village.block_id
-                                LEFT JOIN
-                            geographies_district ON geographies_district.id = geographies_block.district_id
-                                LEFT JOIN
-                            geographies_state ON geographies_state.id = geographies_district.state_id
-                                LEFT JOIN
-                            geographies_country ON geographies_country.id = geographies_state.country_id
-                                LEFT JOIN
-                            programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id;''',
+                                programs_partner.partner_name,
+                                geographies_country.country_name,
+                                geographies_state.state_name,
+                                geographies_district.district_name,
+                                geographies_block.block_name,
+                                geographies_village.village_name,
+                                people_animatorwisedata.animator_id,
+                                people_animatorwisedata.animator_name,
+                                COUNT(DISTINCT (activities_personadoptpractice.id)) AS 'Total Adoptions',
+                                COUNT(DISTINCT (activities_personadoptpractice.person_id)) AS 'Unique Adopters'
+                            FROM
+                                people_animatorwisedata
+                                    JOIN
+                                geographies_village ON geographies_village.id = people_animatorwisedata.assignedvillage_id
+                                    LEFT JOIN
+                                geographies_block ON geographies_block.id = geographies_village.block_id
+                                    LEFT JOIN
+                                geographies_district ON geographies_district.id = geographies_block.district_id
+                                    LEFT JOIN
+                                geographies_state ON geographies_state.id = geographies_district.state_id
+                                    LEFT JOIN
+                                geographies_country ON geographies_country.id = geographies_state.country_id
+                                    JOIN
+                                activities_screeningwisedata ON activities_screeningwisedata.animator_id = people_animatorwisedata.animator_id
+                                    JOIN
+                                activities_pmawisedata ON activities_pmawisedata.screening_id = activities_screeningwisedata.screening_id
+                                    LEFT JOIN
+                                activities_personadoptpractice ON activities_pmawisedata.person_id = activities_personadoptpractice.person_id
+                                    AND activities_personadoptpractice.video_id = activities_screeningwisedata.video_id
+                                    LEFT JOIN
+                                programs_partner ON programs_partner.id = people_animatorwisedata.partner_id''',
 
         ('video', ):'''SELECT
                         programs_partner.partner_name,
@@ -59,7 +62,7 @@ static_query = {
                             LEFT JOIN
                         geographies_country ON geographies_country.id = geographies_state.country_id
                             JOIN
-                        programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id;''',
+                        programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
         ('person', ):'''SELECT
                             programs_partner.partner_name,
@@ -85,7 +88,7 @@ static_query = {
                                 LEFT JOIN
                             geographies_country ON geographies_country.id = geographies_state.country_id
                                 LEFT JOIN
-                            programs_partner ON programs_partner.id = people_person.partner_id;''',
+                            programs_partner ON programs_partner.id = people_person.partner_id''',
 
         ('persongroup', ):'''yoyoyoyo''',
 
@@ -122,7 +125,7 @@ static_query = {
                                         LEFT JOIN
                                     geographies_country ON geographies_country.id = geographies_state.country_id
                                         JOIN
-                                    programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id;''',
+                                    programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
         ('animator','persongroup'):"13456",
 
@@ -161,7 +164,7 @@ static_query = {
                                         LEFT JOIN
                                     geographies_country ON geographies_country.id = geographies_state.country_id
                                         JOIN
-                                    programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id;''',
+                                    programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
         ('video','persongroup'):"fjekvwlkngr",
 
@@ -200,7 +203,7 @@ static_query = {
                                 left join
                             geographies_country ON geographies_country.id = geographies_state.country_id
                                 left join
-                            programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id;''',
+                            programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
         ('video', ):'''select
                             programs_partner.partner_name,
@@ -230,7 +233,7 @@ static_query = {
                                 left join
                             geographies_country ON geographies_country.id = geographies_state.country_id
                                 left join
-                            programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id;''',
+                            programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
         ('persongroup', ):'''select
                                 programs_partner.partner_name,
@@ -262,7 +265,7 @@ static_query = {
                                     left join
                                 geographies_country ON geographies_country.id = geographies_state.country_id
                                     left join
-                                programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id;''',
+                                programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
         ('animator','video'):'''select
                                     programs_partner.partner_name,
@@ -280,7 +283,7 @@ static_query = {
                                 from
                                     people_animatorwisedata
                                         join
-                                    activities_screeningwisedata ON activities_screeningwisedata.animator_id = people_animatorwisedata.id
+                                    activities_screeningwisedata ON activities_screeningwisedata.animator_id = people_animatorwisedata.animator_id
                                         left join
                                     activities_personmeetingattendance ON activities_personmeetingattendance.screening_id = activities_screeningwisedata.screening_id
                                         left join
@@ -414,4 +417,4 @@ static_query = {
     }
 }
 
-#   'select M.id,M.name,St.state_name,D.district_name,B.block_name,V.village_name,count(distinct(S.id)) as \'Screenings\',count(distinct (PMA.id)) \'Total Viewers\',count(distinct (PMA.person_id)) as \'Distinct Viewers\',count(distinct (PAP.id)) as \'Total Adoptions\',count(distinct (PAP.person_id)) as \'Unique Adopters\' from  people_animator M join people_animatorassignedvillage AAV ON M.id = AAV.animator_id left join geographies_village V ON V.id = AAV.village_id left join geographies_block B ON B.id = V.block_id left join geographies_district D ON D.id = B.district_id left join geographies_state St ON St.id = D.state_id join activities_screening S ON S.animator_id = M.id join activities_screening_videoes_screened SVS ON SVS.screening_id = S.id join activities_personmeetingattendance PMA ON PMA.screening_id = S.id left join activities_personadoptpractice PAP ON PMA.person_id = PAP.person_id and PAP.video_id = SVS.video_id and PAP.date_of_adoption > \'2014-10-01\'where S.date between \'2014/09/01\' and \'2014/11/31\'group by M.id;'
+#   'select M.id,M.name,St.state_name,D.district_name,B.block_name,V.village_name,count(distinct(S.id)) as \'Screenings\',count(distinct (PMA.id)) \'Total Viewers\',count(distinct (PMA.person_id)) as \'Distinct Viewers\',count(distinct (PAP.id)) as \'Total Adoptions\',count(distinct (PAP.person_id)) as \'Unique Adopters\' from  people_animator M join people_animatorassignedvillage AAV ON M.id = AAV.animator_id left join geographies_village V ON V.id = AAV.village_id left join geographies_block B ON B.id = V.block_id left join geographies_district D ON D.id = B.district_id left join geographies_state St ON St.id = D.state_id join activities_screening S ON S.animator_id = M.id join activities_screening_videoes_screened SVS ON SVS.screening_id = S.id join activities_personmeetingattendance PMA ON PMA.screening_id = S.id left join activities_personadoptpractice PAP ON PMA.person_id = PAP.person_id and PAP.video_id = SVS.video_id and PAP.date_of_adoption > \'2014-10-01\'where S.date between \'2014/09/01\' and \'2014/11/31\'group by M.id'
