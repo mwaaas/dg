@@ -94,7 +94,7 @@ class data_lib():
     #        print queryComponents
     #        print "----------------------------------Full SQL Query---------------------------"
             query = self.getRequiredTables(relevantPartitionDictionary, input, args, self.lookup_matrix)
-    #        print query
+            print query
     #        print "-------------------------------Result--------------------------------"
             df = self.runQuery(query)
             if final_df.empty:
@@ -116,23 +116,33 @@ class data_lib():
         query_to_run = ''
         if valueDictElement == 'numAdoption' or valueDictElement == 'attendance':
             select_from_query_to_run = self.getStaticQuery(partitionDict,valueDictElement,args).split('FROM')
+            selectResult = select_from_query_to_run[0].replace('SELECT','')
+            fromResult = select_from_query_to_run[1]
             whereResult = self.getWhereComponent(partitionDict, valueDictElement, self.Dict, args, lookup_matrix)
             groupbyResult = self.getGroupByComponent(partitionDict, valueDictElement)
-            query_to_run = self.makeSQLquery(select_from_query_to_run[0].replace('SELECT',''),select_from_query_to_run[1],whereResult,groupbyResult)
+            query_to_run = self.makeSQLquery(selectResult,fromResult,whereResult,groupbyResult)
+            print "----------------------------------SELECT PART------------------------------"
+            print selectResult
+            print "----------------------------------FROM PART--------------------------------"
+            print fromResult
+            print "----------------------------------WHERE PART-------------------------------"
+            print whereResult
+            print "---------------------------------GROUP_BY PART----------------------------"
+            print groupbyResult
         else:
             self.Dict.clear()
             selectResult = self.getSelectComponent(partitionDict, valueDictElement)
             fromResult = self.getFromComponent(partitionDict, valueDictElement, lookup_matrix)
             whereResult = self.getWhereComponent(partitionDict, valueDictElement, self.Dict, args, lookup_matrix)
             groupbyResult = self.getGroupByComponent(partitionDict, valueDictElement)
-        #    print "----------------------------------SELECT PART------------------------------"
-        #    print selectResult
-        #    print "----------------------------------FROM PART--------------------------------"
-        #    print fromResult
-        #    print "----------------------------------WHERE PART-------------------------------"
-        #    print whereResult
-        #    print "---------------------------------GROUP_BY PART----------------------------"
-        #    print groupbyResult
+            print "----------------------------------SELECT PART------------------------------"
+            print selectResult
+            print "----------------------------------FROM PART--------------------------------"
+            print fromResult
+            print "----------------------------------WHERE PART-------------------------------"
+            print whereResult
+            print "---------------------------------GROUP_BY PART----------------------------"
+            print groupbyResult
             query_to_run = self.makeSQLquery(selectResult, fromResult, whereResult, groupbyResult)
         return (query_to_run)
 
@@ -267,10 +277,16 @@ class data_lib():
     def staticQuery(self,partitionList, valueCondition, dateArgs):
         print "!!!!!!!!!!!!!!!!!!!!!!1"+str(partitionList)
         print "@@@@@@@@@@@@@@@@@@@@@@@"+str(valueCondition)
+        squery = ''
         for entry in static_query[valueCondition]:
+            print "entry = "
+            print entry, type(entry)
+            print partitionList
             if sorted(entry) == sorted(tuple(partitionList)):
-                squery =  static_query[valueCondition][tuple(partitionList)].replace('from_date',dateArgs[0])
-                squery = squery.replace('to_date',dateArgs[1])
+                print "here i am"
+                print static_query[valueCondition][entry]
+                squery =  static_query[valueCondition][entry]
+        print squery
         return squery
 
     # Function to accept query as a string to execute and make dataframe corresponding to that particular query and return that dataframe

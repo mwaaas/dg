@@ -1,7 +1,7 @@
 __author__ = 'Lokesh'
 static_query = {
     'numAdoption' : {
-        ('animator'):'''SELECT
+        ('animator', ):'''SELECT
                             programs_partner.partner_name,
                             geographies_country.country_name,
                             geographies_state.state_name,
@@ -31,7 +31,7 @@ static_query = {
                                 LEFT JOIN
                             programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id;''',
 
-        ('video'):'''SELECT
+        ('video', ):'''SELECT
                         programs_partner.partner_name,
                         geographies_country.country_name,
                         geographies_state.state_name,
@@ -61,7 +61,7 @@ static_query = {
                             JOIN
                         programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id;''',
 
-        ('person'):'''SELECT
+        ('person', ):'''SELECT
                             programs_partner.partner_name,
                             geographies_country.country_name,
                             geographies_state.state_name,
@@ -87,7 +87,7 @@ static_query = {
                                 LEFT JOIN
                             programs_partner ON programs_partner.id = people_person.partner_id;''',
 
-        ('persongroup'):'''yoyoyoyo''',
+        ('persongroup', ):'''yoyoyoyo''',
 
         ('animator','video'):'''SELECT
                                     programs_partner.partner_name,
@@ -172,7 +172,7 @@ static_query = {
 
 
     'attendance' : {
-        ('animator'):'''select
+        ('animator', ):'''select
                             programs_partner.partner_name,
                             geographies_country.country_name,
                             geographies_state.state_name,
@@ -202,7 +202,7 @@ static_query = {
                                 left join
                             programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id;''',
 
-        ('video'):'''select
+        ('video', ):'''select
                             programs_partner.partner_name,
                             geographies_country.country_name,
                             geographies_state.state_name,
@@ -232,7 +232,7 @@ static_query = {
                                 left join
                             programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id;''',
 
-        ('persongroup'):'''select
+        ('persongroup', ):'''select
                                 programs_partner.partner_name,
                                 geographies_country.country_name,
                                 geographies_state.state_name,
