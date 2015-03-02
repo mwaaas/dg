@@ -90,7 +90,35 @@ static_query = {
                                 LEFT JOIN
                             programs_partner ON programs_partner.id = people_person.partner_id''',
 
-        ('persongroup', ):'''yoyoyoyo''',
+        ('persongroup', ):'''SELECT
+                                programs_partner.partner_name,
+                                geographies_country.country_name,
+                                geographies_state.state_name,
+                                geographies_district.district_name,
+                                geographies_block.block_name,
+                                geographies_village.village_name,
+                                people_persongroup.id,
+                                people_persongroup.group_name,
+                                count(distinct (activities_personadoptpractice.id)) as 'Total Viewers',
+                                count(distinct (activities_personadoptpractice.person_id)) as 'Unique Viewers'
+                            FROM
+                                people_person
+                                    join
+                                activities_personadoptpractice on activities_personadoptpractice.person_id = people_person.id
+                                    left join
+                                people_persongroup ON people_persongroup.id = people_person.group_id
+                                    left join
+                                geographies_village ON geographies_village.id = people_person.village_id
+                                    left join
+                                geographies_block ON geographies_block.id = geographies_village.block_id
+                                    left join
+                                geographies_district ON geographies_district.id = geographies_block.district_id
+                                    left join
+                                geographies_state ON geographies_state.id = geographies_district.state_id
+                                    left join
+                                geographies_country ON geographies_country.id = geographies_state.country_id
+                                    left join
+                                programs_partner ON programs_partner.id = people_person.partner_id''',
 
         ('animator','video'):'''SELECT
                                     programs_partner.partner_name,
