@@ -175,7 +175,7 @@ static_query = {
 
 
     'attendance' : {
-        ('animator', ):'''select
+        ('animator', ):'''SELECT
                             programs_partner.partner_name,
                             geographies_country.country_name,
                             geographies_state.state_name,
@@ -184,14 +184,14 @@ static_query = {
                             geographies_village.village_name,
                             people_animatorwisedata.animator_id,
                             people_animatorwisedata.animator_name,
-                            count(distinct (activities_personmeetingattendance.id)) as 'Total Viewers',
-                            count(distinct (activities_personmeetingattendance.person_id)) as 'Unique Viewers'
-                        from
+                            count(distinct (activities_pmawisedata.pma_id)) as 'Total Viewers',
+                            count(distinct (activities_pmawisedata.person_id)) as 'Unique Viewers'
+                        FROM
                             people_animatorwisedata
                                 join
                             activities_screeningwisedata ON activities_screeningwisedata.animator_id = people_animatorwisedata.animator_id
                                 join
-                            activities_personmeetingattendance ON activities_personmeetingattendance.screening_id = activities_screeningwisedata.screening_id
+                            activities_pmawisedata ON activities_pmawisedata.screening_id = activities_screeningwisedata.screening_id
                                 left join
                             geographies_village ON geographies_village.id = activities_screeningwisedata.village_id
                                 left join
@@ -205,7 +205,7 @@ static_query = {
                                 left join
                             programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
-        ('video', ):'''select
+        ('video', ):'''SELECT
                             programs_partner.partner_name,
                             geographies_country.country_name,
                             geographies_state.state_name,
@@ -214,14 +214,14 @@ static_query = {
                             geographies_village.village_name,
                             videos_video_wisedata.video_id,
                             videos_video_wisedata.title,
-                            count(distinct (activities_personmeetingattendance.id)) as 'Total Viewers',
-                            count(distinct (activities_personmeetingattendance.person_id)) as 'Unique Viewers'
-                        from
+                            count(distinct (activities_pmawisedata.pma_id)) as 'Total Viewers',
+                            count(distinct (activities_pmawisedata.person_id)) as 'Unique Viewers'
+                        FROM
                             videos_video_wisedata
                                 left join
                             activities_screeningwisedata ON activities_screeningwisedata.video_id = videos_video_wisedata.video_id
                                 left join
-                            activities_personmeetingattendance ON activities_personmeetingattendance.screening_id = activities_screeningwisedata.screening_id
+                            activities_pmawisedata ON activities_pmawisedata.screening_id = activities_screeningwisedata.screening_id
                                 left join
                             geographies_village ON geographies_village.id = activities_screeningwisedata.village_id
                                 left join
@@ -235,7 +235,7 @@ static_query = {
                                 left join
                             programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
-        ('persongroup', ):'''select
+        ('persongroup', ):'''SELECT
                                 programs_partner.partner_name,
                                 geographies_country.country_name,
                                 geographies_state.state_name,
@@ -244,14 +244,14 @@ static_query = {
                                 geographies_village.village_name,
                                 people_persongroup.id,
                                 people_persongroup.group_name,
-                                count(distinct (activities_personmeetingattendance.id)) as 'Total Viewers',
-                                count(distinct (activities_personmeetingattendance.person_id)) as 'Unique Viewers'
-                            from
+                                count(distinct (activities_pmawisedata.pma_id)) as 'Total Viewers',
+                                count(distinct (activities_pmawisedata.person_id)) as 'Unique Viewers'
+                            FROM
                                 activities_screeningwisedata
                                     left join
-                                activities_personmeetingattendance ON activities_personmeetingattendance.screening_id = activities_screeningwisedata.screening_id
+                                activities_pmawisedata ON activities_pmawisedata.screening_id = activities_screeningwisedata.screening_id
                                     left join
-                                people_person ON people_person.id = activities_personmeetingattendance.person_id
+                                people_person ON people_person.id = activities_pmawisedata.person_id
                                     left join
                                 people_persongroup ON people_persongroup.id = people_person.group_id
                                     left join
@@ -267,7 +267,7 @@ static_query = {
                                     left join
                                 programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
-        ('animator','video'):'''select
+        ('animator','video'):'''SELECT
                                     programs_partner.partner_name,
                                     geographies_country.country_name,
                                     geographies_state.state_name,
@@ -278,14 +278,14 @@ static_query = {
                                     people_animatorwisedata.animator_name,
                                     videos_video_wisedata.video_id,
                                     videos_video_wisedata.title,
-                                    count(distinct (activities_personmeetingattendance.id)) as 'Total Viewers',
-                                    count(distinct (activities_personmeetingattendance.person_id)) as 'Unique Viewers'
-                                from
+                                    count(distinct (activities_pmawisedata.pma_id)) as 'Total Viewers',
+                                    count(distinct (activities_pmawisedata.person_id)) as 'Unique Viewers'
+                                FROM
                                     people_animatorwisedata
                                         join
                                     activities_screeningwisedata ON activities_screeningwisedata.animator_id = people_animatorwisedata.animator_id
                                         left join
-                                    activities_personmeetingattendance ON activities_personmeetingattendance.screening_id = activities_screeningwisedata.screening_id
+                                    activities_pmawisedata ON activities_pmawisedata.screening_id = activities_screeningwisedata.screening_id
                                         left join
                                     videos_video_wisedata ON videos_video_wisedata.video_id = activities_screeningwisedata.video_id
                                         left join
@@ -301,7 +301,7 @@ static_query = {
                                         left join
                                     programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
-        ('animator','persongroup'):'''select
+        ('animator','persongroup'):'''SELECT
                                             programs_partner.partner_name,
                                             geographies_country.country_name,
                                             geographies_state.state_name,
@@ -312,14 +312,14 @@ static_query = {
                                             people_animatorwisedata.animator_name,
                                             people_persongroup.id,
                                             people_persongroup.group_name,
-                                            count(distinct (activities_personmeetingattendance.id)) as 'Total Viewers',
-                                            count(distinct (activities_personmeetingattendance.person_id)) as 'Unique Viewers'
-                                        from
+                                            count(distinct (activities_pmawisedata.pma_id)) as 'Total Viewers',
+                                            count(distinct (activities_pmawisedata.person_id)) as 'Unique Viewers'
+                                        FROM
                                             people_animatorwisedata
                                                 join
                                             activities_screeningwisedata ON activities_screeningwisedata.animator_id = people_animatorwisedata.id
                                                 join
-                                            activities_personmeetingattendance ON activities_personmeetingattendance.screening_id = activities_screeningwisedata.screening_id
+                                            activities_pmawisedata ON activities_pmawisedata.screening_id = activities_screeningwisedata.screening_id
                                                 join
                                             activities_screening_farmer_groups_targeted ON activities_screening_farmer_groups_targeted.screening_id = activities_screeningwisedata.screening_id
                                                 left join
@@ -337,7 +337,7 @@ static_query = {
                                                 left join
                                             programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
-        ('animator','video','persongroup'):'''select
+        ('animator','video','persongroup'):'''SELECT
                                                 programs_partner.partner_name,
                                                 geographies_country.country_name,
                                                 geographies_state.state_name,
@@ -350,9 +350,9 @@ static_query = {
                                                 people_persongroup.group_name,
                                                 videos_video_wisedata.video_id,
                                                 videos_video_wisedata.title,
-                                                count(distinct (activities_personmeetingattendance.id)) as 'Total Viewers',
-                                                count(distinct (activities_personmeetingattendance.person_id)) as 'Unique Viewers'
-                                            from
+                                                count(distinct (activities_pmawisedata.pma_id)) as 'Total Viewers',
+                                                count(distinct (activities_pmawisedata.person_id)) as 'Unique Viewers'
+                                            FROM
                                                 people_animatorwisedata
                                                     join
                                                 activities_screeningwisedata ON activities_screeningwisedata.animator_id = people_animatorwisedata.animator_id
@@ -361,7 +361,7 @@ static_query = {
                                                     join
                                                 activities_screening_farmer_groups_targeted ON activities_screening_farmer_groups_targeted.screening_id = activities_screeningwisedata.screening_id
                                                     join
-                                                activities_personmeetingattendance ON activities_personmeetingattendance.screening_id = activities_screeningwisedata.screening_id
+                                                activities_pmawisedata ON activities_pmawisedata.screening_id = activities_screeningwisedata.screening_id
                                                     left join
                                                 people_persongroup ON people_persongroup.id = activities_screening_farmer_groups_targeted.persongroup_id
                                                     left join
@@ -377,7 +377,7 @@ static_query = {
                                                     left join
                                                 programs_partner ON programs_partner.id = activities_screeningwisedata.partner_id''',
 
-        ('video','persongroup'):'''select
+        ('video','persongroup'):'''SELECT
                                         programs_partner.partner_name,
                                         geographies_country.country_name,
                                         geographies_state.state_name,
@@ -388,8 +388,8 @@ static_query = {
                                         videos_video_wisedata.title,
                                         people_persongroup.id,
                                         people_persongroup.group_name,
-                                        count(distinct (activities_personmeetingattendance.id)) as 'Total Viewers',
-                                        count(distinct (activities_personmeetingattendance.person_id)) as 'Unique Viewers'
+                                        count(distinct (activities_pmawisedata.pma_id)) as 'Total Viewers',
+                                        count(distinct (activities_pmawisedata.person_id)) as 'Unique Viewers'
                                     FROM
                                         activities_personadoptpractice
                                             join
@@ -397,7 +397,7 @@ static_query = {
                                             join
                                         activities_screeningwisedata ON activities_screeningwisedata.video_id = videos_video_wisedata.video_id
                                             join
-                                        activities_personmeetingattendance ON activities_personmeetingattendance.screening_id = activities_screeningwisedata.screening_id
+                                        activities_pmawisedata ON activities_pmawisedata.screening_id = activities_screeningwisedata.screening_id
                                             join
                                         activities_screening_farmer_groups_targeted ON activities_screening_farmer_groups_targeted.screening_id = activities_screeningwisedata.screening_id
                                             left join
@@ -417,4 +417,4 @@ static_query = {
     }
 }
 
-#   'select M.id,M.name,St.state_name,D.district_name,B.block_name,V.village_name,count(distinct(S.id)) as \'Screenings\',count(distinct (PMA.id)) \'Total Viewers\',count(distinct (PMA.person_id)) as \'Distinct Viewers\',count(distinct (PAP.id)) as \'Total Adoptions\',count(distinct (PAP.person_id)) as \'Unique Adopters\' from  people_animator M join people_animatorassignedvillage AAV ON M.id = AAV.animator_id left join geographies_village V ON V.id = AAV.village_id left join geographies_block B ON B.id = V.block_id left join geographies_district D ON D.id = B.district_id left join geographies_state St ON St.id = D.state_id join activities_screening S ON S.animator_id = M.id join activities_screening_videoes_screened SVS ON SVS.screening_id = S.id join activities_personmeetingattendance PMA ON PMA.screening_id = S.id left join activities_personadoptpractice PAP ON PMA.person_id = PAP.person_id and PAP.video_id = SVS.video_id and PAP.date_of_adoption > \'2014-10-01\'where S.date between \'2014/09/01\' and \'2014/11/31\'group by M.id'
+#   'SELECT M.id,M.name,St.state_name,D.district_name,B.block_name,V.village_name,count(distinct(S.id)) as \'Screenings\',count(distinct (PMA.id)) \'Total Viewers\',count(distinct (PMA.person_id)) as \'Distinct Viewers\',count(distinct (PAP.id)) as \'Total Adoptions\',count(distinct (PAP.person_id)) as \'Unique Adopters\' FROM  people_animator M join people_animatorassignedvillage AAV ON M.id = AAV.animator_id left join geographies_village V ON V.id = AAV.village_id left join geographies_block B ON B.id = V.block_id left join geographies_district D ON D.id = B.district_id left join geographies_state St ON St.id = D.state_id join activities_screening S ON S.animator_id = M.id join activities_screening_videoes_screened SVS ON SVS.screening_id = S.id join activities_pmawisedata PMA ON PMA.screening_id = S.id left join activities_personadoptpractice PAP ON PMA.person_id = PAP.person_id and PAP.video_id = SVS.video_id and PAP.date_of_adoption > \'2014-10-01\'where S.date between \'2014/09/01\' and \'2014/11/31\'group by M.id'
