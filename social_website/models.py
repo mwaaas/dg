@@ -7,7 +7,6 @@ from django.db.models.signals import post_delete, post_save
 
 from post_save_funcs import increase_online_video_like, update_stats, video_add_activity, collection_add_activity, video_collection_activity
 
-
 #===============================================================================
 # Linked to COCO
 #===============================================================================
@@ -142,7 +141,7 @@ class ResourceVideo(models.Model):
     uid = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
     youtubeID = models.CharField(max_length=50) 
-    date = models.DateField(default=lambda : datetime.datetime.utcnow().date())
+    date = models.DateField(default= datetime.datetime.today())
     videoTag = models.CharField(max_length=2,choices=video_choice,default=FILM)
 
 class FeaturedCollection(models.Model):
@@ -184,7 +183,7 @@ class Milestone(models.Model):
 
 class Comment(models.Model):
     uid = models.AutoField(primary_key=True)
-    date = models.DateField(default=lambda : datetime.datetime.utcnow().date())
+    date = models.DateField(default= datetime.datetime.today())
     text = models.TextField()
     isOnline = models.BooleanField()
     video = models.ForeignKey(Video)
@@ -198,4 +197,5 @@ post_save.connect(increase_online_video_like, sender = VideoLike)
 
 class CronTimestamp(models.Model):
     name = models.CharField(max_length=30)
-    last_time = models.DateTimeField(default=lambda : datetime.datetime.utcnow())
+    last_time = models.DateTimeField(default= datetime.datetime.today())
+

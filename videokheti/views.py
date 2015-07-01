@@ -1,6 +1,6 @@
 from os import listdir
 
-import json
+import datetime, json
 
 from django.contrib.auth.decorators import login_required
 import django.core.serializers
@@ -404,7 +404,7 @@ def comment(request):
         print e
         url = "/media/social_website/content/default.png"
 
-    video = VideoComment(text=text, video_id=video_id, user=request.user, imageURL=url, personName=request.user.username)
+    video = VideoComment(date=datetime.datetime.utcnow().date(), text=text, video_id=video_id, user=request.user, imageURL=url, personName=request.user.username)
     video.save()
     resp = django.core.serializers.serialize('json', [video])
     resp = resp.strip("[]")
