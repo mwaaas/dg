@@ -111,9 +111,15 @@ def get_collections_from_elasticsearch(request):
                               }
                   },
         "facets" : {
-                    "facet" :{
+                    "language_facet" :{
                               "terms": {
-                                        "fields" : ["language", "partner", "state", "category", "subcategory" , "topic", "subject"], 
+                                        "fields" : ["language"], 
+                                        "size" : MAX_RESULT_SIZE
+                                        }
+                              },
+                    "partner_facet" :{
+                              "terms": {
+                                        "fields" : ["partner"], 
                                         "size" : MAX_RESULT_SIZE
                                         }
                               }
@@ -123,23 +129,23 @@ def get_collections_from_elasticsearch(request):
                   },
         "size" : MAX_RESULT_SIZE
         }
+    print "before query"
     result_list = []
-    try :
-        query = json.dumps(q)
-        url = "http://localhost:9200/%s/_search" % FACET_INDEX
-        response = urllib2.urlopen(url, query)
-        result = json.loads(response.read())
-        for res in result['hits']['hits']:
-            result_list.append(res['_source'])
-        facets = json.dumps(result['facets']['facet']['terms'])
-        if result_list:
-            resp = json.dumps({"meta": {"limit": str(limit), "next": "", "offset": str(offset), "previous": "null", "total_count": str(len(result_list))},"objects": result_list[offset:offset+limit], "facets" : facets})
-        else:
-            resp = json.dumps({"meta": {"limit": str(limit), "next": "", "offset": str(offset), "previous": "null", "total_count": "1"},"objects": [{'Message': 'No Collections Found', 'error': "1"}], "facets" : facets})
-        return HttpResponse(resp)
-    except Exception, ex:
-        print ex
-        return HttpResponse(str(ex))
+    query = json.dumps(q)
+    url = "http://localhost:9200/%s/_search" % FACET_INDEX
+    response = urllib2.urlopen(url, query)
+    result = json.loads(response.read())
+    print result
+    for res in result['hits']['hits']:
+        result_list.append(res['_source'])
+    language_facet = json.dumps(result['facets']['language_facet']['terms'])
+    partner_facet = json.dumps(result['facets']['partner_facet']['terms'])
+    if result_list:
+        resp = json.dumps({"meta": {"limit": str(limit), "next": "", "offset": str(offset), "previous": "null", "total_count": str(len(result_list))},"objects": result_list[offset:offset+limit], "language_facets" : language_facet, "partner_facet" : partner_facet})
+    else:
+        resp = json.dumps({"meta": {"limit": str(limit), "next": "", "offset": str(offset), "previous": "null", "total_count": "1"},"objects": [{'Message': 'No Collections Found', 'error': "1"}], "language_facets" : language_facet, "partner_facet" : partner_facet})
+    return HttpResponse(resp)
+    
     
 def searchCompletions(request):
     searchString = request.GET.get('searchString')
@@ -173,7 +179,7 @@ def searchCompletions(request):
         for res in result['hits']['hits']:
             if res['_source']['type'] != "Collections":
                 result_list.append(res['_source'])
-                res['_source']['count'] = 0
+                #res['_source']['count'] = 0
             elif res['_source']['searchTerm'] not in done_list:
                 val = str(res['_source']['searchTerm']).lower()
                 for term in result['facets']['facet']['terms']:
