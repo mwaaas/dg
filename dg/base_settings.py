@@ -15,6 +15,7 @@ MANAGERS = ADMINS
 # system time zone.
 TIME_ZONE = 'UTC'
 
+DEBUG=True
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
@@ -219,5 +220,24 @@ LOGGING = {
             'handlers': ['logfile'],
             'level': 'DEBUG',
         },
+    }
+}
+
+SECRET_KEY = 'wg($z9%qxgzeo4flubk9ehh8k5^#tzs+c)pi%@699-n$=j(cr2'
+
+DATABASES = {
+    "default": {
+        # Add "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
+        "ENGINE": "django.db.backends.sqlite3",
+        # DB name or path to database file if using sqlite3.
+        "NAME": "dbsqlite",
+        # Not used with sqlite3.
+        "USER": "",
+        # Not used with sqlite3.
+        "PASSWORD": "",
+        # Set to empty string for localhost. Not used with sqlite3.
+        "HOST": "",
+        # Set to empty string for default. Not used with sqlite3.
+        "PORT": "",
     }
 }

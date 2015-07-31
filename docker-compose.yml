@@ -1,0 +1,8 @@
+#db:
+#  image: postgres:9.5
+
+web:
+  build: .
+  command: python manage.py runserver --settings=dg.base_settings
+  ports:
+    - 8000:8000
