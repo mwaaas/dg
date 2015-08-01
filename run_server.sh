@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-python manage.py runserver --settings=dg.base_settings
+exec python manage.py runserver 0.0.0.0:8000 --settings=dg.base_settings
