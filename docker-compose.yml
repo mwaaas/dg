@@ -3,6 +3,6 @@
 
 web:
   build: .
-  command: python manage.py runserver --settings=dg.base_settings
+  command: ./run_server.sh
   ports:
-    - 8000:8000
+    - 8080:8000
