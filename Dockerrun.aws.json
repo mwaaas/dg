@@ -1,0 +1,12 @@
+{
+  "AWSEBDockerrunVersion": "2",
+
+  "containerDefinitions": [
+    {
+      "name": "web",
+      "image": "mwaaas/dg:0.0.1",
+     "memory": 128,
+      "command": ["./run_server.sh"]
+    }
+  ]
+}
