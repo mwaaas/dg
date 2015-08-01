@@ -310,7 +310,6 @@
 .project
 .pydevproject
 /dg/media/social_website/node_modules/*
-/dg/settings.py
 /sandbox_settings.py
 /gwt/DashboardGwt/war/WEB-INF/*
 /gwt/DashboardGwt/war/dashboardgwt/*

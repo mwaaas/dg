@@ -1,4 +1,4 @@
-from mwaaas/dg:0.0.1
+from mwaaas/dg:0.0.2
 
 ADD . .
 

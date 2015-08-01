@@ -3,7 +3,7 @@ build_app_packages:
 	docker build -t mwaaas/dg:$(v) devops/dg_packages
 
 push_app_packages:
-	docker build mwaaas/dg:$(v) devops/dg_packages
+	docker push mwaaas/dg:$(v)
 
 build_push_app_packages: build_app_packages push_app_packages
 
