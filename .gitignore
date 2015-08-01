@@ -318,3 +318,8 @@
 .DS_Store
 .idea
 .venv
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
